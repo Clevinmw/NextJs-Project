@@ -2,7 +2,7 @@ import User from "@/models/userModel";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
-import { connect } from "@/dbConfig/dbConfig";
+import connect from "@/dbConfig/dbConfig";
 
 export async function POST(request: NextRequest) {
   try {
