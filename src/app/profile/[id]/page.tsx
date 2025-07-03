@@ -1,9 +1,12 @@
-import React from 'react'
+import React from 'react';
 
-function UserProfilePage({params}:any) {
-  return (
-    <div>UserId: {params.id}</div>
-  )
-}
+type Props = {
+  params: Promise<{ id: string }>;
+};
 
-export default UserProfilePage
+const UserProfilePage = async ({ params }: Props) => {
+  const { id } = await params;
+  return <div>UserId: {id}</div>;
+};
+
+export default UserProfilePage;

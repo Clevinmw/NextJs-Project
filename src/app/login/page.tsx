@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 function LoginPage() {
   const [user, setUser] = useState({
@@ -17,10 +18,7 @@ function LoginPage() {
     try {
       e.preventDefault();
       setLoading(true);
-      const response: any = await axios.post(
-        "/api/users/login",
-        user
-      );
+      const response = await axios.post("/api/users/login", user);
       console.log(response, "se");
 
       if (response.data.success) {
@@ -28,9 +26,13 @@ function LoginPage() {
         toast.success("Login success");
         router.push("/profile");
       }
-    } catch (error: any) {
-      console.log("Login failed", error);
-      toast.error(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log("Login failed", error);
+        toast.error(error.message);
+      } else {
+        toast.error("Unknown error");
+      }
     } finally {
       setLoading(false);
     }
@@ -40,10 +42,12 @@ function LoginPage() {
     <div className="flex justify-center items-center">
       <div className="flex min-h-full flex-col justify-center align-item-center px-6 py-12 lg:px-8  md:w-1/4">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
+          <Image
             className="mx-auto h-10 w-auto"
             src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
             alt="Your Company"
+            width={40}
+            height={40}
           />
           <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white-900">
             {loading ? "Processing" : "Login in to your account"}
