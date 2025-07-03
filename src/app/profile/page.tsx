@@ -1,20 +1,32 @@
 "use client";
 import axios from "axios";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
 
+// Define a User type for type safety
+interface User {
+  _id: string;
+  username?: string;
+  email?: string;
+  // Add other fields as needed
+}
+
 function ProfilePage() {
   const router = useRouter();
-  const [user, setUserDetails]: any = useState(null);
+  const [user, setUserDetails] = useState<User | null>(null);
   const handleLogout = async () => {
     try {
-      const response = await axios.get("/api/users/logout");
+      await axios.get("/api/users/logout");
       toast.success("Logged out successfully");
       router.push("/login");
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(error.message);
+      } else {
+        console.log('Unknown error');
+      }
     }
   };
 
@@ -40,8 +52,8 @@ function ProfilePage() {
       <hr />
       <div className="mt-10">
         <h3>Profile details</h3>
-        <h5>{user ? user?._id : "No user details"}</h5>
-        <Link href={`/profile/${user ? user._id : null}`}>User details</Link>
+        <h5>{user ? user._id : "No user details"}</h5>
+        <Link href={`/profile/${user ? user._id : ""}`}>User details</Link>
       </div>
     </div>
   );

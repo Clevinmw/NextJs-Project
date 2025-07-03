@@ -1,15 +1,21 @@
 import axios from "axios";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+
+// Define a User type for type safety
+interface User {
+  _id: string;
+  username?: string;
+  email?: string;
+  // Add other fields as needed
+}
 
 export function Profile() {
   useEffect(() => {
     fetchUserDetails();
   });
 
-  const router = useRouter();
-  const [user, setUserDetails]: any = useState(null);
+  const [user, setUserDetails] = useState<User | null>(null);
 
   const fetchUserDetails = async () => {
     const response = await axios.get("/api/users/profile");

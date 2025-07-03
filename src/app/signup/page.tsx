@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 export default function SignupPage() {
   const [user, setUser] = useState({
@@ -25,9 +26,13 @@ export default function SignupPage() {
         router.push("/login");
       }
       console.log(response, "Signup success");
-    } catch (error: any) {
-      console.log("Signup failed");
-      toast.error(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log("Signup failed");
+        toast.error(error.message);
+      } else {
+        toast.error("Unknown error");
+      }
     } finally {
       setLoading(false);
     }
@@ -37,10 +42,12 @@ export default function SignupPage() {
     <div className="flex justify-center items-center">
       <div className="flex min-h-full flex-col justify-center align-item-center px-6 py-12 lg:px-8  md:w-1/4">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
+          <Image
             className="mx-auto h-10 w-auto"
             src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
             alt="Your Company"
+            width={40}
+            height={40}
           />
           <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white-900">
             {loading ? "Processing" : "Signup"}
